@@ -57,8 +57,33 @@ Update `/root/san-exporter/config.yml` for corresponding to SAN storage
 # docker run -d -p 8888:8888 -v san-exporter:/var/log/ -v /root/san-exporter/config.yml:/san-exporter/config.yml --name san-exporter daikk115/san-exporter:latest
 ```
 
-## Matrix of driver's metrics
-#TODO
+## Supported Drivers
+
+- Matrix of driver's generic metrics
+
+|             | **Capacity all** | **Capacity pool** | **IOPS/Throuhgput pool** | **Latency pool** | **IOPS/Throughput node** | **Latency node** | **CPU node** | **RAM node** | **IOPS/Throughput LUN** | **Latency LUN** | **IOPS/Throughput disk** | **Latency disk** | **IOPS/Throughput port** | **Latency port** | **Alert** |
+| ----------- | ---------------- | ----------------- | ------------------------ | ---------------- | ------------------------ | ---------------- | ------------ | ------------ | ----------------------- | --------------- | ------------------------ | ---------------- | ------------------------ | ---------------- | --------- |
+| HPMSA       | **X**            | **X**             | **X**                    | **X**            |                          | **X**            |              |              |                         |                 |                          |                  | **X**                    | **X**            | **X**     |
+| DellUnity   |                  |                   |                          |                  |                          |                  |              |              |                         |                 |                          |                  |                          |                  |           |
+| HitachiG700 |                  |                   |                          |                  |                          |                  |              |              |                         |                 |                          |                  |                          |                  |           |
+| HPE3Par     |                  |                   |                          |                  |                          |                  |              |              |                         |                 |                          |                  |                          |                  |           |
+| NetApp      |                  |                   |                          |                  |                          |                  |              |              |                         |                 |                          |                  |                          |                  |           |
+| SC8000      |                  |                   |                          |                  |                          |                  |              |              |                         |                 |                          |                  |                          |                  |           |
+| V7k         |                  |                   |                          |                  |                          |                  |              |              |                         |                 |                          |                  |                          |                  |           |
+
+- Connection port requirements
+  - For some SAN system, we collect metrics over SP API but some others, we collect metrics dirrectly from controller API.
+  - In some special cases, we collect alerts over SSH.
+
+| SAN System   | Service Processor | Connection Port |
+|--------------|-------------------|-----------------|
+| HPMSA        | NO                | 443             |
+| Dell Unity   | NO                | 443             |
+| Hitachi G700 | YES               | #TODO           |
+| IBM V7000    | NO                | #TODO           |
+| IBM V5000    | NO                | #TODO           |
+| HPE 3PAR     | YES               | #TODO           |
+| NetApp ONTAP | NO                | #TODO           |
 
 ## Metrics
 
