@@ -1,5 +1,5 @@
 ############################################
-# Driver type supported: dummy
+# Driver type supported: dummy, HPMSA
 ############################################
 
 # Port run exporter
@@ -46,3 +46,15 @@ backends:
   interval: 300
   optional_metrics:
     cpu: True
+
+# HPMSA Driver
+# Tested with MSA 2050, MSA 2040
+# Supported optional metrics: volume, alert
+- name: "hpmsa"
+  hpmsa_backend_host: "10.11.12.13"
+  hpmsa_backend_username: "manage"
+  hpmsa_backend_password: "!manage"
+  driver: "hpmsa"
+  optional_metrics:
+    "volume": False
+    "alert": False
