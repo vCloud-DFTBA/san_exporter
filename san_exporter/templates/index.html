@@ -1,0 +1,19 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SAN Exporter</title>
+</head>
+<body>
+    <h1>SAN Exporter</h1>
+    {% if enabled_backends|length > 0 %}
+    <h4>Visit there link to see metrics.</h4>
+    <ul>
+        {% for backend in enabled_backends %}
+        <li><a href="/{{ backend }}">{{ backend }}</a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No backend was enabled!</p>
+    {% endif %}
+</body>
+</html>

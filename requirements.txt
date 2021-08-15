@@ -1,0 +1,9 @@
+flask==1.1.1
+lxml==4.2.1
+paramiko==2.6.0
+pluggy==0.12.0
+prometheus_client==0.7.1
+python-3parclient==4.2.10
+pyyaml==5.1.2
+requests==2.22.0
+storops==1.2.4
