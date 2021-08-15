@@ -20,8 +20,34 @@ $ curl http://10.0.2.15:8888/dummy_backend
 
 - [Start with with a HPE 3PAR api simulator](docs/quickstart_with_simulator.md)
 
-## Installation
-#TODO
+## Deployment
+
+**Build new image**
+
+```
+$ git clone git@github.com:vCloud-DFTBA/san_exporter.git
+$ cd ~/san_exporter
+$ docker build -t san-exporter:latest .
+$ docker push san-exporter:latest
+```
+
+TODO(daikk115): Make a prebuild available on public registry
+
+**Create configuration file**
+
+```
+# mkdir /root/san-exporter
+# cp /path/to/san_exporter/examples/config.yml.sample /root/san-exporter/config.yml
+```
+
+Update `/root/san-exporter/config.yml` for corresponding to SAN storage
+
+**Run new container**
+
+```
+# docker volume create san-exporter
+# docker run -d -p 8888:8888 -v san-exporter:/var/log/ -v /root/san-exporter/config.yml:/san-exporter/config.yml --name san-exporter san-exporter:latest
+```
 
 ## Matrix of driver's metrics
 #TODO
