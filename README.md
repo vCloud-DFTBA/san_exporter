@@ -1,5 +1,13 @@
 # SAN Exporter
-Prometheus exporter for Storage Area Network (SAN)
+Prometheus exporter for Storage Area Network (SAN).
+
+We all know that each SAN Storage vendor has their own glossary of terms, health/performance metrics and monitoring tool.
+
+But from operator view,
+  - We normally focus on some **main metrics** which are similar on different storage platform.
+  - We are **not only** monitoring SAN storage **but also** other devices and services at multi-layer (application, virtual Machine, hypervisor, operating system and physical).
+
+That's why we build this to have an **unified monitoring/alerting solution** with Prometheus and Alermanager.
 
 ## Architecture overview
 ![SAN exporter architecture](docs/images/architecture.png)
@@ -54,8 +62,6 @@ Update `/root/san-exporter/config.yml` for corresponding to SAN storage
 
 ## Metrics
 
-We all know that each SAN Storage vendor has their own glossary of terms and health/performance metrics.
-But form
 All metrics are prefixed with "san_" and has at least 2 labels: `backend_name` and `san_ip`
 
 ### Info metrics:
