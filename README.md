@@ -6,7 +6,17 @@ Prometheus exporter for Storage Area Network (SAN)
 
 ## Quick start
 
-- Start with a dummy driver
+- Start a dummy driver with Docker
+```
+$ git clone git@github.com:vCloud-DFTBA/san_exporter.git
+$ cd san_exporter/
+$ cp examples/dummy_config.yml config.yml
+# docker run --rm -p 8888:8888 -v $(pwd)/config.yml:/san-exporter/config.yml --name san-exporter daikk115/san-exporter:0.1.0
+```
+
+See the result at `http://localhost:8888/dummy_backend`
+
+- Start a dummy driver manually
 
 ```
 $ git clone git@github.com:vCloud-DFTBA/san_exporter.git
@@ -15,23 +25,13 @@ $ cp examples/dummy_config.yml config.yml
 $ sudo apt-get install libxml2-dev libxslt1-dev python3.7-dev
 $ pip3 install -r requirements.txt
 $ python3.7 manage.py
-$ curl http://10.0.2.15:8888/dummy_backend
 ```
 
-- [Start with with a HPE 3PAR api simulator](docs/quickstart_with_simulator.md)
+See the result at `http://localhost:8888/dummy_backend`
+
+- [Start with a HPE 3PAR api simulator](docs/quickstart_with_simulator.md)
 
 ## Deployment
-
-**Build new image**
-
-```
-$ git clone git@github.com:vCloud-DFTBA/san_exporter.git
-$ cd ~/san_exporter
-$ docker build -t san-exporter:latest .
-$ docker push san-exporter:latest
-```
-
-TODO(daikk115): Make a prebuild available on public registry
 
 **Create configuration file**
 
@@ -46,7 +46,7 @@ Update `/root/san-exporter/config.yml` for corresponding to SAN storage
 
 ```
 # docker volume create san-exporter
-# docker run -d -p 8888:8888 -v san-exporter:/var/log/ -v /root/san-exporter/config.yml:/san-exporter/config.yml --name san-exporter san-exporter:latest
+# docker run -d -p 8888:8888 -v san-exporter:/var/log/ -v /root/san-exporter/config.yml:/san-exporter/config.yml --name san-exporter daikk115/san-exporter:latest
 ```
 
 ## Matrix of driver's metrics
