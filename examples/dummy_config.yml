@@ -1,0 +1,48 @@
+###############################
+# Driver type supported: dummy
+###############################
+
+# Port run exporter
+port: 8888
+
+# Host run in exporter
+host: 0.0.0.0
+
+# Enable debug logging for exporter
+debug: false
+
+# San-exporter will send request to SAN storage interval
+# to get information and cache to file
+# This config can be set in global for apply to all backend
+# or can be set for specific backend
+# You should set this value for each backend is not less than the driver's value recommendation.
+# Unit: second
+# Default: interval = 5m
+interval: 300
+
+# Timeout to mask data in cache file is old
+# Calculated from the last time data in the cache file was updated to the current.
+# This config can be set in global for apply to all backend
+# or can be set for specific back-end
+# You should set this value for each backend is not less than the driver's value recommendation.
+# Unit: second
+# Default: timeout = 10m
+timeout: 600
+
+# Default: /var/log/san_exporter.log
+log_file: "san_exporter.log"
+
+
+enabled_backends:
+- dummy_backend
+
+backends:
+- name: "dummy_backend"
+  dummy_backend_url: "http://localhost:5001/api/v1"
+  dummy_backend_username: "username"
+  dummy_backend_password: "password"
+  driver: "dummy"
+  timeout: 600
+  interval: 300
+  optional_metrics:
+    cpu: True

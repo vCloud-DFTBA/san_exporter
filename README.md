@@ -5,7 +5,20 @@ Prometheus exporter for Storage Area Network (SAN)
 ![SAN exporter architecture](docs/images/architecture.png)
 
 ## Quick start
-#TODO
+
+- Start with a dummy driver
+
+```
+$ git clone git@github.com:vCloud-DFTBA/san_exporter.git
+$ cd san_exporter/
+$ cp examples/dummy_config.yml config.yml
+$ sudo apt-get install libxml2-dev libxslt1-dev python3.7-dev
+$ pip3 install -r requirements.txt
+$ python3.7 manage.py
+$ curl http://10.0.2.15:8888/dummy_backend
+```
+
+- [Start with with a HPE 3PAR api simulator](docs/quickstart_with_simulator.md)
 
 ## Installation
 #TODO
