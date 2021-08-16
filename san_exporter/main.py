@@ -129,8 +129,7 @@ def do_get(backend_name):
                     timeout = backend['timeout']
         cached = get_data(cache_file)
         running_backends[backend_name][0].time_last_request = time()
-        if (running_backends[backend_name]
-            [0].time_last_request - cached[1]['time']) > timeout:
+        if (running_backends[backend_name][0].time_last_request - cached[1]['time']) > timeout:
             message = 'Data timeout in cache file of storage backend: ' + backend_name
             logging.warning(message)
             return message
