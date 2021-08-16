@@ -273,7 +273,7 @@ class HPEStorwizeV7kExporter(base_driver.ExporterDriver):
 
                 # caching data to file using pickle
                 cache_data(self.cache_file, data)
-            except:
+            except BaseException:
                 logging.error('Error: ', exc_info=True)
 
             sleep(self.interval)
