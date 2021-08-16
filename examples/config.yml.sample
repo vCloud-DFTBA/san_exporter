@@ -97,3 +97,21 @@ backends:
     - 127.0.0.2
   severity_alert: # List severrity alert want to alert: Degraded, Critical, Down, Inform
     - Critical
+
+# IBM V7000 driver: we're getting IBM V7000 metrics via IBM Spectrum Rest API
+- name: "v7k_01"
+  using_ibm_spectrum_control: "yes"
+  ibm_spectrum_control:
+    url: "https://127.0.0.1:9120"
+    username: "monitor"
+    password: "password"
+  timeout: 600
+  interval: 300 # should not less than 5m, see the driver config below
+  driver: "v7k"
+  pools: all
+  optional_metrics:
+    port: True
+    cpg_statics: True
+  v7000_ip: # List V7000 IP on IBM Spectrum need to get metrics
+    - 127.0.0.1
+    - 127.0.0.2

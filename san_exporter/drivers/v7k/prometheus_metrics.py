@@ -57,10 +57,6 @@ class HPEStorwizeV7kMetrics(base_driver.Metrics):
 
         self.define_pool_info_metrics()
 
-        if self.optional_metrics.get('alert'):
-            alert_labels = ['log_content', 'backend_name', 'instance']
-            self.alert_metric = Gauge('san_alert', 'SAN Alert', alert_labels, registry=self.registry)
-
     def define_pool_info_metrics(self):
         pool_labels = ["backend_name", "pool_name", "san_ip"]
         self.gauge_san_pool_total_lun = Gauge('san_pool_totalLUNs', 'Total LUNs (or Volumes)',
@@ -161,11 +157,6 @@ class HPEStorwizeV7kMetrics(base_driver.Metrics):
             self.parse_perf_metrics(data['pool_perf'])
         if self.optional_metrics.get('port'):
             self.parse_perf_metrics(data['node_perf'])
-        if self.optional_metrics.get('alert'):
-            self.alert_metric._metrics.clear()
-            for alert in data['alerts']:
-                labels = alert
-                self.alert_metric.labels(**labels).set(1)
 
     def get_metrics(self):
         metrics = generate_latest(self.registry)

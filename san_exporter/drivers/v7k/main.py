@@ -20,7 +20,6 @@ import requests
 import operator
 
 from san_exporter.utils.utils import cache_data
-from san_exporter.utils.ssh_utils import SSHConnection
 
 from san_exporter.drivers import base_driver
 from san_exporter.drivers.v7k import prometheus_metrics
@@ -147,8 +146,6 @@ class HPEStorwizeV7kExporter(base_driver.ExporterDriver):
         self.ibm_spectrum_control = config['ibm_spectrum_control']
         self._setup_spectrum_control_url()
         self.target_v7000 = []
-        self.v7k_backend_ip = config['v7k_backend_ip']
-        self.v7k_backend_port = config['v7k_backend_port']
         self.backend_name = config['name']
         self.client = None
         self.ssh_client = None
@@ -156,17 +153,6 @@ class HPEStorwizeV7kExporter(base_driver.ExporterDriver):
             self.target_v7000.append({
                 'IP Address': v
             })
-
-    def client_v7k_ssh_login(self, username, password):
-        try:
-            logging.debug("Connecting to HPE Storwize V7000 Storage")
-            self.ssh_client = SSHConnection(ip=self.v7k_backend_ip, port=self.v7k_backend_port,
-                                            user=username, password=password)
-            logging.info("Logged in to HPE Storwize V7000 Storage at: " + self.v7k_backend_ip)
-        except Exception as ex:
-            msg = ("Failed to Login to HPE Storwize V7000 Storage at (%(url)s) because %(err)s" %
-                   {'url': self.v7k_backend_ip, 'err': ex})
-            logging.error(msg)
 
     def _setup_spectrum_control_url(self):
         # This is setup for IBM Spectrum Control v5.2
@@ -222,33 +208,6 @@ class HPEStorwizeV7kExporter(base_driver.ExporterDriver):
                 storage_pools.append(pool_data)
         return storage_pools
 
-    def _get_alert(self):
-        cmd = "lseventlog -filtervalue 'error_code>=1' -delim !"
-        raw_alert = self.ssh_client.execute(cmd)
-        alerts = self._parse_alert(raw_alert)
-        return alerts
-
-    def _parse_alert(self, raw_alert):
-        for alert in raw_alert:
-            del alert['event_id']
-
-            del alert['error_code']
-            del alert['last_timestamp']
-            del alert['status']
-
-            alert['log_content'] = alert['description'] + " at " + alert['object_name']
-            del alert['description']
-            del alert['object_name']
-            del alert['object_type']
-            del alert['object_id']
-            del alert['copy_id']
-            del alert['fixed']
-            del alert['sequence_number']
-
-            alert['backend_name'] = self.backend_name
-            alert['instance'] = self.v7k_backend_ip
-        return raw_alert
-
     def _get_resource_perf(self, resource, metrics_list, storage_id, storage_ip):
         current_epoch_time = time()
         current_epoch_time = int(current_epoch_time) * 1000
@@ -285,7 +244,7 @@ class HPEStorwizeV7kExporter(base_driver.ExporterDriver):
             resource_perf.append(metric_converted)
         return resource_perf
 
-    def run(self):
+    def run(self):   # noqa: C901
         while True:
             try:
                 if time() - self.time_last_request > self.timeout:
@@ -311,11 +270,6 @@ class HPEStorwizeV7kExporter(base_driver.ExporterDriver):
                     for v in self.target_v7000:
                         perf = self._get_resource_perf('Nodes', NODE_STATISTIC_METRICS, v['id'], v['IP Address'])
                         data['node_perf'] = perf
-
-                # if self.optional_metrics.get('alert'):
-                #     self.client_v7k_ssh_login()
-                #     alerts = self._get_alert()
-                #     data['alerts'] = alerts
 
                 # caching data to file using pickle
                 cache_data(self.cache_file, data)
