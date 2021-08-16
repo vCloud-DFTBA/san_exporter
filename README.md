@@ -70,7 +70,7 @@ Update `/root/san-exporter/config.yml` for corresponding to SAN storage
 | HitachiG700 |                  |                   |                          |                  |                          |                  |              |              |                         |                 |                          |                  |                          |                  |           |
 | HPE3Par     | **X**            | **X**             | **X**                    | **X**            |                          |                  | **X**        |              |                         |                 |                          |                  |  **X**                   | **X**            | **X**     |
 | NetApp      |                  |                   |                          |                  |                          |                  |              |              |                         |                 |                          |                  |                          |                  |           |
-| SC8000      |                  |                   |                          |                  |                          |                  |              |              |                         |                 |                          |                  |                          |                  |           |
+| SC8000      |  **X**                |      **X**             |                          |                  |          **X**                |      **X**            | **X**             |       **X**       |                         |                 |        **X**                   |           **X**        |       **X**                    |       **X**            |       **X**     |
 | V7k         |                  |                   |                          |                  |                          |                  |              |              |                         |                 |                          |                  |                          |                  |           |
 
 - Connection port requirements
@@ -86,6 +86,7 @@ Update `/root/san-exporter/config.yml` for corresponding to SAN storage
 | IBM V5000    | NO                | #TODO           |
 | HPE 3PAR     | YES               | #TODO           |
 | NetApp ONTAP | NO                | #TODO           |
+| SC8000 | NO                |        3033   |
 
 ## Metrics
 
