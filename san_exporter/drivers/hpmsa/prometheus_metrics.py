@@ -28,7 +28,10 @@ class HPMSAMetrics(base_driver.Metrics):
         super().__init__(config=config)
 
         self.backend_name = config['name']
-        self.info_san = Info('san_storage', 'Basic information', registry=self.registry)
+        self.info_san = Info(
+            'san_storage',
+            'Basic information',
+            registry=self.registry)
         self.metrics = {}
         self.san_ip = config['hpmsa_backend_host']
 
@@ -49,11 +52,17 @@ class HPMSAMetrics(base_driver.Metrics):
             labels = value['labels']
             labels['backend_name'] = self.backend_name
             if name not in self.metrics:
-                metric = Gauge(name, value['description'], labels.keys(), registry=self.registry)
+                metric = Gauge(
+                    name,
+                    value['description'],
+                    labels.keys(),
+                    registry=self.registry)
                 self.metrics[name] = metric
             self.metrics[name]._metrics.clear()
-            if name in {'san_pool_free_capacity_mib', 'san_pool_total_capacity_mib'}:
-                self.metrics[name].labels(**labels).set(value['value']/1024)
+            if name in {
+                'san_pool_free_capacity_mib',
+                    'san_pool_total_capacity_mib'}:
+                self.metrics[name].labels(**labels).set(value['value'] / 1024)
             else:
                 self.metrics[name].labels(**labels).set(value['value'])
 

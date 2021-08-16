@@ -39,7 +39,9 @@ SYSTEM_PROPERTIES_AS_LABEL_MAPPING = {'system-name': 'name'}
 SYSTEMHEATH_PROPERTIES_AS_LABEL_MAPPING = {
     'system-name': 'name', 'health-reason': 'reason'
 }
-POOL_PROPERTIES_AS_LABEL_MAPPING = {'name': 'pool_name', 'serial-number': 'serial'}
+POOL_PROPERTIES_AS_LABEL_MAPPING = {
+    'name': 'pool_name',
+    'serial-number': 'serial'}
 POOLSTATS_PROPERTIES_AS_LABEL_MAPPING = {
     'pool': 'pool_name', 'serial-number': 'serial'
 }
@@ -248,7 +250,7 @@ class HPMSAExporter(base_driver.ExporterDriver):
             timeto = datetime.datetime.now()
             timefrom = datetime.datetime.now() - datetime.timedelta(seconds=10000000)
             OPTIONAL_METRICS['alert']['alert']['sources']['path'] = alert_path.format(
-                        timefrom.strftime('%m%d%y%H%M%S'), timeto.strftime('%m%d%y%H%M%S'))
+                timefrom.strftime('%m%d%y%H%M%S'), timeto.strftime('%m%d%y%H%M%S'))
             logging.info(OPTIONAL_METRICS['alert']['alert']['sources']['path'])
             for opt, enabled in self.optional_metrics.items():
                 if not enabled:
@@ -262,7 +264,8 @@ class HPMSAExporter(base_driver.ExporterDriver):
                 creds = hashlib.md5(b'%s_%s' % (self.login.encode(
                     'utf8'), self.password.encode('utf8'))).hexdigest()
                 response = session.get(
-                    'https://%s/api/login/%s' % (self.host, creds), timeout=self.interval)
+                    'https://%s/api/login/%s' %
+                    (self.host, creds), timeout=self.interval)
                 response.raise_for_status()
                 session_key = ET.fromstring(response.content)[0][2].text
 
@@ -286,7 +289,8 @@ class HPMSAExporter(base_driver.ExporterDriver):
                     for source in sources:
                         if source['path'] not in path_cache:
                             response = session.get(
-                                'https://%s/api/show/%s' % (self.host, source['path']), timeout=self.interval)
+                                'https://%s/api/show/%s' %
+                                (self.host, source['path']), timeout=self.interval)
                             response.raise_for_status()
                             path_cache[source['path']] = lxml.etree.fromstring(
                                 response.content)
@@ -300,7 +304,8 @@ class HPMSAExporter(base_driver.ExporterDriver):
                             if source.get('fixed_value', None):
                                 value = source.get('fixed_value')
                             else:
-                                value = obj.find(source['property_selector']).text
+                                value = obj.find(
+                                    source['property_selector']).text
 
                             if source.get('multiple_with_property', None):
                                 if obj.find(source['multiple_with_property']):
@@ -309,9 +314,11 @@ class HPMSAExporter(base_driver.ExporterDriver):
                                         obj.find(source['multiple_with_property']).text)
                                 else:
                                     # For HPMSA 2040
-                                    blocksize = obj.find(source['property_selector']).attrib['units'].replace("blocks", "")
+                                    blocksize = obj.find(
+                                        source['property_selector']).attrib['units'].replace(
+                                        "blocks", "")
                                     value = int(value) * int(blocksize)
-                            labels.update({"san_ip":self.host})
+                            labels.update({"san_ip": self.host})
 
                             if name in self.info_metrics:
                                 data_cache['info_metrics'][name] = value
@@ -324,7 +331,7 @@ class HPMSAExporter(base_driver.ExporterDriver):
                                     'value': value
                                 })
                 cache_data(self.cache_file, data_cache)
-            except:
+            except BaseException:
                 logging.error('Error: ', exc_info=True)
 
             sleep(self.interval)

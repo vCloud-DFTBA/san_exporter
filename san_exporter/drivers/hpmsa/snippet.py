@@ -32,7 +32,10 @@ password = "***"
 session = requests.Session()
 session.verify = False
 
-creds = hashlib.md5(b'%s_%s' % ("manage".encode('utf8'), password.encode('utf8'))).hexdigest()
+creds = hashlib.md5(
+    b'%s_%s' %
+    ("manage".encode('utf8'),
+     password.encode('utf8'))).hexdigest()
 response = session.get('https://%s/api/login/%s' % (host, creds))
 response.raise_for_status()
 session_key = ET.fromstring(response.content)[0][2].text

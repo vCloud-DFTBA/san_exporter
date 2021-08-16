@@ -49,11 +49,15 @@ class DummyExporter(base_driver.ExporterDriver):
     def client_login(self):
         try:
             logging.debug("Connecting to Dummy Storage")
-            self.client.login(self.dummy_backend_username, self.dummy_backend_password)
+            self.client.login(
+                self.dummy_backend_username,
+                self.dummy_backend_password)
             logging.info("Logged in to: " + self.dummy_backend_url)
         except Exception as ex:
-            msg = ("Failed to Login to Dummy Storage at (%(url)s) because %(err)s" %
-                   {'url': self.dummy_backend_url, 'err': ex})
+            msg = (
+                "Failed to Login to Dummy Storage at (%(url)s) because %(err)s" % {
+                    'url': self.dummy_backend_url,
+                    'err': ex})
             logging.error(msg)
 
     def client_logout(self):
@@ -93,7 +97,7 @@ class DummyExporter(base_driver.ExporterDriver):
                     }
                 ]
 
-                data['pools']= pool_stats
+                data['pools'] = pool_stats
                 if self.optional_metrics.get('cpu_statistics'):
                     cpu_statistics = [
                         {
@@ -118,7 +122,7 @@ class DummyExporter(base_driver.ExporterDriver):
                     data['cpu_statistics'] = cpu_statistics
                 # caching data to file using pickle
                 cache_data(self.cache_file, data)
-            except:
+            except BaseException:
                 logging.error('Error: ', exc_info=True)
             finally:
                 self.client_logout()
@@ -129,6 +133,7 @@ class DummyExporter(base_driver.ExporterDriver):
 """
 This main func must always return two instances of two object with the order: StorageNameExporter, StorageMetrics
 """
+
 
 def main(config, interval):
     dummy_metrics = prometheus_metrics.DummyMetrics(config)

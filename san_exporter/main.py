@@ -54,11 +54,17 @@ def load_config():
 
 def config_logging(log_file):
     if config['debug']:
-        logging.basicConfig(filename=log_file, filemode='a', format='%(asctime)s   %(levelname)s   %(message)s',
-                            level=logging.DEBUG)
+        logging.basicConfig(
+            filename=log_file,
+            filemode='a',
+            format='%(asctime)s   %(levelname)s   %(message)s',
+            level=logging.DEBUG)
     else:
-        logging.basicConfig(filename=log_file, filemode='a', format='%(asctime)s   %(levelname)s   %(message)s',
-                            level=logging.INFO)
+        logging.basicConfig(
+            filename=log_file,
+            filemode='a',
+            format='%(asctime)s   %(levelname)s   %(message)s',
+            level=logging.INFO)
 
 
 # Entry point of app
@@ -93,15 +99,19 @@ def create_app():
                 interval = config['interval']
             if backend_config.get('interval'):
                 interval = backend_config['interval']
-            rb = drivers[backend_config['driver']].main(backend_config, interval)
+            rb = drivers[backend_config['driver']].main(
+                backend_config, interval)
             running_backends[backend_config['name']] = rb
-            # running_backends = {'3par1111': (HPE3ParExporter, HPE3ParMetrics), ...}
+            # running_backends = {'3par1111': (HPE3ParExporter,
+            # HPE3ParMetrics), ...}
     return app
 
 
 @app.route('/')
 def index():
-    return render_template('index.html', enabled_backends=config['enabled_backends'])
+    return render_template(
+        'index.html',
+        enabled_backends=config['enabled_backends'])
 
 
 @app.route('/<backend_name>')
@@ -118,7 +128,8 @@ def do_get(backend_name):
                     timeout = backend['timeout']
         cached = get_data(cache_file)
         running_backends[backend_name][0].time_last_request = time()
-        if (running_backends[backend_name][0].time_last_request - cached[1]['time']) > timeout:
+        if (running_backends[backend_name]
+                [0].time_last_request - cached[1]['time']) > timeout:
             message = 'Data timeout in cache file of storage backend: ' + backend_name
             logging.warning(message)
             return message
@@ -133,7 +144,8 @@ def do_get(backend_name):
             }
         )
     else:
-        return render_template('index.html', enabled_backends=config['enabled_backends'])
+        return render_template('index.html',
+                               enabled_backends=config['enabled_backends'])
 
 
 if __name__ == '__main__':
