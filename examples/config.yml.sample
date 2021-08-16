@@ -97,3 +97,20 @@ backends:
     - 127.0.0.2
   severity_alert: # List severrity alert want to alert: Degraded, Critical, Down, Inform
     - Critical
+
+# Dell Unity
+- name: "dellunity"
+  dellunity_api_ip: "1.1.1.1"
+  dellunity_username: "monitor"
+  dellunity_password: "password"
+  timeout: 600
+  interval: 300
+  driver: "dellunity"
+  optional_metrics:
+    pool: true
+    node: true
+    fcport: true
+    disk: true
+    lun: true
+    alert: true
+
