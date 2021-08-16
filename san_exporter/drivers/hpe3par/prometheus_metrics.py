@@ -1,3 +1,19 @@
+#
+#    Copyright (C) 2021 Viettel Networks
+#
+#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+#    not use this file except in compliance with the License. You may obtain
+#    a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+#    Unless required by applicable law or agreed to in writing, software
+#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#    License for the specific language governing permissions and limitations
+#    under the License.
+#
+
 import logging
 
 from prometheus_client import Gauge, Info
@@ -59,7 +75,6 @@ class HPE3ParMetrics(base_driver.Metrics):
             alert_labels = ['log_content', 'backend_name', 'san_ip']
             self.alert_metric = Gauge('san_alert', 'SAN Alert', alert_labels, registry=self.registry)
 
-
     def _check_license_enabled(self, valid_licenses, license_to_check, capability):
         """Check a license against valid licenses on the array."""
         if valid_licenses:
@@ -106,11 +121,11 @@ class HPE3ParMetrics(base_driver.Metrics):
             .labels(backend_name=self.backend_name, san_ip=self.san_ip).set(len(system_info["onlineNodes"]))
 
         self.gauge_san_qos_support.labels(backend_name=self.backend_name, san_ip=self.san_ip).set(qos_support)
-        self.gauge_san_thin_provision_support.labels(backend_name=self.backend_name, san_ip=self.san_ip)\
+        self.gauge_san_thin_provision_support.labels(backend_name=self.backend_name, san_ip=self.san_ip) \
             .set(thin_support)
-        self.gauge_san_system_reporter_support.labels(backend_name=self.backend_name, san_ip=self.san_ip)\
+        self.gauge_san_system_reporter_support.labels(backend_name=self.backend_name, san_ip=self.san_ip) \
             .set(system_support)
-        self.gauge_san_compress_support.labels(backend_name=self.backend_name, san_ip=self.san_ip)\
+        self.gauge_san_compress_support.labels(backend_name=self.backend_name, san_ip=self.san_ip) \
             .set(compression_support)
 
         self.gauge_san_total_capacity_mib \
@@ -231,10 +246,10 @@ class HPE3ParMetrics(base_driver.Metrics):
         for pool in pool_statistics:
             pool_name = pool.get('name')
             self.gauge_san_pool_number_read_io.labels(backend_name=self.backend_name, san_ip=self.san_ip,
-                                                      pool_name=pool_name)\
+                                                      pool_name=pool_name) \
                 .set(pool['IO']['read'])
             self.gauge_san_pool_number_write_io.labels(backend_name=self.backend_name, san_ip=self.san_ip,
-                                                       pool_name=pool_name)\
+                                                       pool_name=pool_name) \
                 .set(pool['IO']['write'])
             self.gauge_san_pool_read_kb.labels(backend_name=self.backend_name, san_ip=self.san_ip,
                                                pool_name=pool_name) \
