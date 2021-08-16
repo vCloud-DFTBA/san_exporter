@@ -149,5 +149,4 @@ For more information about specific metrics of SANs, see [Specific SAN Metrics](
 ## Integrate with Prometheus, Alertmanager and Grafana
 
 - [Example prometheus alert rules](examples/rules)
-- [Example alertmanager alerts](examples/alerts)
 - [Example grafana dashboard](examples/dashboards)

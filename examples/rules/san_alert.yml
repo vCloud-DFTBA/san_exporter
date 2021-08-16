@@ -1,0 +1,75 @@
+groups:
+  - name: san_exporter
+    rules:
+      - alert: san_controller_down
+        expr: san_onlineNodes < san_totalNodes
+        for: 5m
+        annotations:
+          summary: "SAN controller down"
+          description: "SAN controller of backend {{ $labels.backend_name }} has been down for more than 5m."
+          value: "{{ $value }}"
+
+      - alert: san_controller_cluster_partition
+        expr: san_cluster_nodes < san_totalNodes
+        for: 5m
+        annotations:
+          summary: "SAN controller cluster partition"
+          description: "SAN controller of backend {{ $labels.backend_name }} has been partitioned for more than 5m."
+          value: "{{ $value }}"
+
+      - alert: san_port_read_service_time_high
+        expr: san_port_read_service_time_ms > 100
+        for: 5m
+        annotations:
+          summary: "SAN port read service time is high"
+          description: "Port at Node-{{ $labels.node }} Card-{{ $labels.card }} Slot-{{ $labels.slot }} in backend {{ $labels.backend_name }} has high read service time (> 100ms) for more than 5m.\n  VALUE = {{ humanize $value }} ms."
+          value: "{{ $value }}"
+
+      - alert: san_port_write_service_time_high
+        expr: san_port_write_service_time_ms > 150
+        for: 5m
+        annotations:
+          summary: "SAN port write service time high"
+          description: "Port at Node-{{ $labels.node }} Card-{{ $labels.card }} Slot-{{ $labels.slot }} in backend {{ $labels.backend_name }} has high write service time (> 150ms) for more than 5m.\n  VALUE = {{ humanize $value }} ms."
+          value: "{{ $value }}"
+
+      - alert: san_pool_read_service_time_high
+        expr: san_pool_read_service_time_ms > 150
+        for: 5m
+        annotations:
+          summary: "SAN pool read service time high"
+          description: "Pool {{ $labels.pool_name }} in backend {{ $labels.backend_name }} has high read service time (> 150ms) for more than 5m.\n  VALUE = {{ humanize $value }} ms."
+          value: "{{ $value }}"
+
+      - alert: san_pool_write_service_time_high
+        expr: san_pool_write_service_time_ms > 200
+        for: 5m
+        annotations:
+          summary: "SAN pool write service time high"
+          description: "Pool {{ $labels.pool_name }} in backend {{ $labels.backend_name }} has high write service time (> 200ms) for more than 5m.\n  VALUE = {{ humanize $value }} ms."
+          value: "{{ $value }}"
+
+      - alert: san_pool_provisioned_high
+        expr: (san_pool_provisioned_capacity_mib / san_pool_total_capacity_mib * 100) > 95
+        for: 5m
+        annotations:
+          summary: "SAN pool provisioned high"
+          description: "Pool {{ $labels.pool_name }} in backend {{ $labels.backend_name }} has high provisioned (> 95%).\n  VALUE = {{ humanize $value }} %."
+          value: "{{ $value }}"
+
+      - alert: san_pool_usage_high
+        expr: ((san_pool_total_capacity_mib - san_pool_free_capacity_mib) / san_pool_total_capacity_mib * 100 ) > 95
+        for: 5m
+        annotations:
+          summary: "SAN pool usage high"
+          description: "Pool {{ $labels.pool_name }} in backend {{ $labels.backend_name }} has high usage (> 95%).\n  VALUE = {{ humanize $value }} %."
+          value: "{{ $value }}"
+
+      # SAN Alert
+      - alert: san_alert_on_storage
+        expr: san_alert == 1
+        for: 5m
+        annotations:
+          summary: "SAN storage is having alert"
+          description: "SAN Storage backend {{ $labels.backend_name }} at IP {{ $labels.san_ip }} is having alert.\n  Alert content: {{ $labels.log_content }}."
+          value: "{{ $value }}"
