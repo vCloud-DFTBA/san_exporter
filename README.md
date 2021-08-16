@@ -150,3 +150,11 @@ For more information about specific metrics of SANs, see [Specific SAN Metrics](
 
 - [Example prometheus alert rules](examples/rules)
 - [Example grafana dashboard](examples/dashboards)
+
+**Some grafana images:**
+
+![SAN exporter dashboard overview](examples/dashboards/images/san-overview.jpg)
+
+![SAN exporter dashboard pool](examples/dashboards/images/san-pool.jpg)
+
+![SAN exporter dashboard port](examples/dashboards/images/san-port.jpg)
