@@ -79,3 +79,21 @@ backends:
     cpu: False
     cpg: True
     alert: True # Note: this alert metrics will be collected via SSH
+
+# SC8000 Driver
+- name: "sc8000"
+  DSM_api_ip: "10.1.1.1"          # IP DSM
+  DSM_api_port: "3033"            #Port API (default)
+  DSM_username: "user_DSM"
+  DSM_password: "pass_DSM"
+  timeout: 600
+  interval: 300
+  driver: "sc8000"
+  apiversion: "3.5"    #x-dell-api-version
+  verify_cert: False
+#List of SC's IP which want to get metrics. Using 'sc8000_ip: all' to get the metrics of all SC that were managed by DSM 
+  sc8000_ip:  
+    - 127.0.0.1
+    - 127.0.0.2
+  severity_alert: # List severrity alert want to alert: Degraded, Critical, Down, Inform
+    - Critical
