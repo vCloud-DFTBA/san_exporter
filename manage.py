@@ -16,7 +16,6 @@
 
 from san_exporter import main
 from san_exporter.main import load_config
-import logging
 
 PORT = 8888
 HOST = '0.0.0.0'
