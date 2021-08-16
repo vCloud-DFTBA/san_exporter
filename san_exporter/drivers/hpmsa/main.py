@@ -237,7 +237,7 @@ class HPMSAExporter(base_driver.ExporterDriver):
             'san_node_hardware_version'
         ]
 
-    def run(self):
+    def run(self):  # noqa: C901
         # TODO: Inject auto reload optional metrics here!
         global METRICS, OPTIONAL_METRICS
         alert_path = OPTIONAL_METRICS['alert']['alert']['sources']['path']

@@ -22,10 +22,11 @@ import yaml
 from yaml.scanner import ScannerError
 from flask import Flask, Response, render_template
 import urllib3
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 from san_exporter.drivers import load_driver
 from san_exporter.utils.utils import get_data
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 app = Flask(__name__)
 CONFIG_FILE = "../config.yml"
@@ -129,7 +130,7 @@ def do_get(backend_name):
         cached = get_data(cache_file)
         running_backends[backend_name][0].time_last_request = time()
         if (running_backends[backend_name]
-                [0].time_last_request - cached[1]['time']) > timeout:
+            [0].time_last_request - cached[1]['time']) > timeout:
             message = 'Data timeout in cache file of storage backend: ' + backend_name
             logging.warning(message)
             return message

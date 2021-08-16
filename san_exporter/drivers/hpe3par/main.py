@@ -153,7 +153,7 @@ class HPE3ParExporter(base_driver.ExporterDriver):
                     temp[k] = v
         return alert
 
-    def run(self):
+    def run(self):  # noqa: C901
         self.client = self._create_client()
         while True:
 
@@ -202,7 +202,7 @@ class HPE3ParExporter(base_driver.ExporterDriver):
                 # Caching data to file using pickle
                 cache_data(self.cache_file, data)
 
-            except:
+            except BaseException:
                 logging.error('Error: ', exc_info=True)
             finally:
                 self.client_logout()

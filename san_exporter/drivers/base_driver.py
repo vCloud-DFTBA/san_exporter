@@ -60,7 +60,7 @@ class Metrics:
             # Every metrics must have a label "backend_name": name of backend
             # Other information like: storage name, version, serial, .. should
             # be put to the INFO metric
-            _labels = ["backend_name"]
+            _labels = ["backend_name"]  # noqa: F841
 
         self.optional_metrics = config.get('optional_metrics', {})
 
@@ -78,4 +78,4 @@ class Metrics:
         # Pool metrics should have these labels:
         #   backend_name: backend name
         #   pool_name: pool/CPG name
-        pool_labels = ["backend_name", "pool_name"]
+        pool_labels = ["backend_name", "pool_name"]  # noqa: F841
