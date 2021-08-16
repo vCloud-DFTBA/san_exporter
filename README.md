@@ -1,4 +1,6 @@
 # SAN Exporter
+[![license](https://img.shields.io/badge/license-Apache%20v2.0-blue.svg)](LICENSE) [![CI](https://github.com/vCloud-DFTBA/san_exporter/actions/workflows/main.yml/badge.svg?branch=main&event=push)](https://github.com/vCloud-DFTBA/san_exporter/actions/workflows/main.yml)
+
 Prometheus exporter for Storage Area Network (SAN).
 
 We all know that each SAN Storage vendor has their own glossary of terms, health/performance metrics and monitoring tool.
