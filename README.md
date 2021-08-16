@@ -67,7 +67,7 @@ Update `/root/san-exporter/config.yml` for corresponding to SAN storage
 | ----------- | ---------------- | ----------------- | ------------------------ | ---------------- | ------------------------ | ---------------- | ------------ | ------------ | ----------------------- | --------------- | ------------------------ | ---------------- | ------------------------ | ---------------- | --------- |
 | HPMSA       | **X**            | **X**             | **X**                    | **X**            |                          | **X**            |              |              |                         |                 |                          |                  | **X**                    | **X**            | **X**     |
 | DellUnity   | **X**            | **X**             |                          |                  | **X**                    |                  |              |              | **X**                   | **X**           | **X**                    | **X**            | **X**                    | **X**            | **X**     |
-| HitachiG700 |                  |                   |                          |                  |                          |                  |              |              |                         |                 |                          |                  |                          |                  |           |
+| HitachiG700 | **X**            | **X**             |                          |                  |                          |                  |              |              |                         |                 |                          |                  |                          |                  | **X**     |
 | HPE3Par     | **X**            | **X**             | **X**                    | **X**            |                          |                  | **X**        |              |                         |                 |                          |                  |  **X**                   | **X**            | **X**     |
 | NetApp      | **X**            |    **X**          |   **X**             |       **X**           |                          |                  |              |              |                         |                 | **X**                         | **X**                 |                          |                  |           |
 | SC8000      |  **X**           | **X**             |                          |                  |    **X**                 | **X**            | **X**        |  **X**       |                         |                 |  **X**                   |     **X**        | **X**                    | **X**            | **X**     |
@@ -81,7 +81,7 @@ Update `/root/san-exporter/config.yml` for corresponding to SAN storage
 |--------------|-------------------|-----------------|
 | HPMSA        | NO                | 443             |
 | Dell Unity   | NO                | 443             |
-| Hitachi G700 | YES               | #TODO           |
+| Hitachi G700 | YES               | 23451           |
 | IBM V7000    | NO                | #TODO           |
 | IBM V5000    | NO                | #TODO           |
 | HPE 3PAR     | YES               | #TODO           |
@@ -150,3 +150,11 @@ For more information about specific metrics of SANs, see [Specific SAN Metrics](
 
 - [Example prometheus alert rules](examples/rules)
 - [Example grafana dashboard](examples/dashboards)
+
+**Some grafana images:**
+
+![SAN exporter dashboard overview](examples/dashboards/images/san-overview.jpg)
+
+![SAN exporter dashboard pool](examples/dashboards/images/san-pool.jpg)
+
+![SAN exporter dashboard port](examples/dashboards/images/san-port.jpg)
