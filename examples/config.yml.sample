@@ -131,4 +131,21 @@ backends:
     disk: true
     lun: true
     alert: true
+    
+# NetApp ONTAP
+- name: "netapp"
+  netapp_api_ip: "10.2.2.xxx"
+  netapp_api_port: "443"
+  netapp_username: "netapp_admin"
+  netapp_password: "netapp_password"
+  timeout: 600
+  interval: 300
+  driver: "netapp"
+  optional_metrics:
+    cluster: true
+    pool: true
+    node: true
+    disk: true
+
+    
 
