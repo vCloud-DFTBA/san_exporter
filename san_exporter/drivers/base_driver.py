@@ -58,7 +58,8 @@ class Metrics:
             _labels = labels
         else:
             # Every metrics must have a label "backend_name": name of backend
-            # Other information like: storage name, version, serial, .. should be put to the INFO metric
+            # Other information like: storage name, version, serial, .. should
+            # be put to the INFO metric
             _labels = ["backend_name"]
 
         self.optional_metrics = config.get('optional_metrics', {})

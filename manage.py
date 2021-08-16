@@ -22,14 +22,14 @@ PORT = 8888
 HOST = '0.0.0.0'
 
 if __name__ == '__main__':
-	config = load_config()
-	if config.get('port'):
-		port = config['port']
-	else:
-		port = PORT
-	if config.get('host'):
-		host = config['host']
-	else:
-		host = HOST
-	app = main.create_app()
-	app.run(host=host, port=port)
+    config = load_config()
+    if config.get('port'):
+        port = config['port']
+    else:
+        port = PORT
+    if config.get('host'):
+        host = config['host']
+    else:
+        host = HOST
+    app = main.create_app()
+    app.run(host=host, port=port)
