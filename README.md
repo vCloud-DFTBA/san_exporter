@@ -69,7 +69,7 @@ Update `/root/san-exporter/config.yml` for corresponding to SAN storage
 | DellUnity   | **X**            | **X**             |                          |                  | **X**                    |                  |              |              | **X**                   | **X**           | **X**                    | **X**            | **X**                    | **X**            | **X**     |
 | HitachiG700 |                  |                   |                          |                  |                          |                  |              |              |                         |                 |                          |                  |                          |                  |           |
 | HPE3Par     | **X**            | **X**             | **X**                    | **X**            |                          |                  | **X**        |              |                         |                 |                          |                  |  **X**                   | **X**            | **X**     |
-| NetApp      |                  |                   |                          |                  |                          |                  |              |              |                         |                 |                          |                  |                          |                  |           |
+| NetApp      | **X**            |    **X**               |   **X**             |       **X**           |                          |                  |              |              |                         |                 | **X**                         | **X**                 |                          |                  |           |
 | SC8000      |  **X**           | **X**             |                          |                  |    **X**                 | **X**            | **X**        |  **X**       |                         |                 |  **X**                   |     **X**        | **X**                    | **X**            | **X**     |
 | V7k         |  **X**           | **X**             | **X**                    | **X**            |                          |                  | **X**        |              |                         |                 |                          |                  |  **X**                   |                  |           |
 
@@ -85,7 +85,7 @@ Update `/root/san-exporter/config.yml` for corresponding to SAN storage
 | IBM V7000    | NO                | #TODO           |
 | IBM V5000    | NO                | #TODO           |
 | HPE 3PAR     | YES               | #TODO           |
-| NetApp ONTAP | NO                | #TODO           |
+| NetApp ONTAP | NO                | 443             |
 | SC8000 | NO                |        3033   |
 
 ## Metrics
