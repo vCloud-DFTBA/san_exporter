@@ -20,7 +20,7 @@ import logging
 
 
 def load_drivers(enabled_backends):
-    form_module = lambda fp: fp + '.main'
+    form_module = lambda fp: fp + '.main'  # noqa: E731
     file_names = os.listdir(os.path.dirname(__file__))
     driver_files = []
     for driver in enabled_backends:
