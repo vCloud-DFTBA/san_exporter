@@ -58,3 +58,24 @@ backends:
   optional_metrics:
     "volume": False
     "alert": False
+
+# HPE 3par Driver
+# Tested with HPE 3par 8440
+# Supported optional metrics: port, cpu, cpg, alert
+- name: "3par_8440"
+  hpe3par_api_url: "http://127.0.0.1:5001/api/v1"
+  hpe3par_username: "hpe3par_admin"
+  hpe3par_password: "hpe3par_password"
+  san_ssh_ip: "127.0.0.1:5001"
+  san_ssh_user: "hpe3par_admin"
+  san_ssh_pass: "hpe3par_password"
+  san_ssh_port: 22
+  timeout: 600
+  interval: 300 # should not less than 5m, see the driver config below
+  driver: "hpe3par"
+  pools: UnitTestCPG, UnitTestCPG2 # all: to get all cpg
+  optional_metrics:
+    port: False
+    cpu: False
+    cpg: True
+    alert: True # Note: this alert metrics will be collected via SSH
