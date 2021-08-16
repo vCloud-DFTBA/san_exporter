@@ -131,6 +131,19 @@ backends:
     disk: true
     lun: true
     alert: true
+
+# Hitachi G700 driver: Getting metrics via VSP Server
+- name: "hitachig700"
+  VSP_api_ip: "1.1.1.1"
+  VSP_api_port: "23451" # HTTPS
+  serial: "xxxxxx"
+  username: "maintenance"
+  password: "password"
+  driver: "hitachig700"
+  optional_metrics:
+    pool: true
+    node: true
+    alert: true
     
 # NetApp ONTAP
 - name: "netapp"
