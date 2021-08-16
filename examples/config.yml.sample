@@ -115,3 +115,20 @@ backends:
   v7000_ip: # List V7000 IP on IBM Spectrum need to get metrics
     - 127.0.0.1
     - 127.0.0.2
+
+# Dell Unity
+- name: "dellunity"
+  dellunity_api_ip: "1.1.1.1"
+  dellunity_username: "monitor"
+  dellunity_password: "password"
+  timeout: 600
+  interval: 300
+  driver: "dellunity"
+  optional_metrics:
+    pool: true
+    node: true
+    fcport: true
+    disk: true
+    lun: true
+    alert: true
+
