@@ -38,70 +38,37 @@ class NetAppMetrics(base_driver.Metrics):
             self.define_disk_metrics()
 
     def define_cluster_info(self):
-        cluster_labels = ["name",
-                          "backend_name",
-                          "san_ip",
-                          "version"]
-        self.gauge_san_cluster_info = Gauge(
-            'san_storage_info',
-            'Basic information',
-            cluster_labels,
-            registry=self.registry)
+        cluster_labels = ["name", "backend_name", "san_ip", "version"]
+        self.gauge_san_cluster_info = Gauge('san_storage_info', 'Basic information',
+                                            cluster_labels, registry=self.registry)
 
     def parse_cluster_info(self, cluster):
-        self.gauge_san_cluster_info.labels(
-            backend_name=self.backend_name,
-            name=cluster['name'],
-            san_ip=cluster['san_ip'],
-            version=cluster['version']).set(1)
+        self.gauge_san_cluster_info.labels(backend_name=self.backend_name, name=cluster['name'],
+                                           san_ip=cluster['san_ip'], version=cluster['version']).set(1)
 
     def define_cluster_metric(self):
-        cluster_labels = ["backend_name",
-                          "san_ip",
-                          "cluster_name"]
-        self.gauge_san_cluster_block_read_iops = Gauge(
-            'san_cluster_number_read_io',
-            'Cluster Read IOPS',
-            cluster_labels,
-            registry=self.registry)
-        self.gauge_san_cluster_block_write_iops = Gauge(
-            'san_cluster_number_write_io',
-            'Cluster Write IOPS',
-            cluster_labels,
-            registry=self.registry)
-        self.gauge_san_cluster_block_read_iops = \
-            Gauge('san_cluster_number_read_io', 'Cluster Read IOPS',
-                  cluster_labels, registry=self.registry)
-        self.gauge_san_cluster_block_write_iops = \
-            Gauge('san_cluster_number_write_io', 'Cluster Write IOPS',
-                  cluster_labels, registry=self.registry)
-        self.gauge_san_cluster_block_other_iops = \
-            Gauge('san_cluster_number_other_io', 'Cluster Other IOPS',
-                  cluster_labels, registry=self.registry)
-        self.gauge_san_cluster_block_read_latency = \
-            Gauge('san_cluster_number_read_latency',
-                  'Cluster Read Latency', cluster_labels,
-                  registry=self.registry)
-        self.gauge_san_cluster_block_write_latency = \
-            Gauge('san_cluster_number_write_latency',
-                  'Cluster Write Latency', cluster_labels,
-                  registry=self.registry)
-        self.gauge_san_cluster_block_other_latency = \
-            Gauge('san_cluster_number_other_latency',
-                  'Cluster Other Latency', cluster_labels,
-                  registry=self.registry)
-        self.gauge_san_cluster_block_read_byte_rate = \
-            Gauge('san_cluster_number_read_by_rate',
-                  'Cluster Read Throughput - KiB/s', cluster_labels,
-                  registry=self.registry)
-        self.gauge_san_cluster_block_write_byte_rate = \
-            Gauge('san_cluster_number_write_byte_rate',
-                  'Cluster Write Throughput - KiB/s', cluster_labels,
-                  registry=self.registry)
-        self.gauge_san_cluster_block_other_byte_rate = \
-            Gauge('san_cluster_number_other_by_rate',
-                  'Cluster Other Throughput - KiB/s', cluster_labels,
-                  registry=self.registry)
+        cluster_labels = ["backend_name", "san_ip", "cluster_name"]
+        self.gauge_san_cluster_block_read_iops = Gauge('san_cluster_number_read_io', 'Cluster Read IOPS',
+                                                       cluster_labels, registry=self.registry)
+        self.gauge_san_cluster_block_write_iops = Gauge('san_cluster_number_write_io', 'Cluster Write IOPS',
+                                                        cluster_labels, registry=self.registry)
+        self.gauge_san_cluster_block_other_iops = Gauge('san_cluster_number_other_io', 'Cluster Other IOPS',
+                                                        cluster_labels, registry=self.registry)
+        self.gauge_san_cluster_block_read_latency = Gauge('san_cluster_number_read_latency', 'Cluster Read Latency',
+                                                          cluster_labels, registry=self.registry)
+        self.gauge_san_cluster_block_write_latency = Gauge('san_cluster_number_write_latency', 'Cluster Write Latency',
+                                                           cluster_labels, registry=self.registry)
+        self.gauge_san_cluster_block_other_latency = Gauge('san_cluster_number_other_latency', 'Cluster Other Latency',
+                                                           cluster_labels, registry=self.registry)
+        self.gauge_san_cluster_block_read_byte_rate = Gauge('san_cluster_number_read_by_rate',
+                                                            'Cluster Read Throughput - KiB/s',
+                                                            cluster_labels, registry=self.registry)
+        self.gauge_san_cluster_block_write_byte_rate = Gauge('san_cluster_number_write_byte_rate',
+                                                             'Cluster Write Throughput - KiB/s',
+                                                             cluster_labels, registry=self.registry)
+        self.gauge_san_cluster_block_other_byte_rate = Gauge('san_cluster_number_other_by_rate',
+                                                             'Cluster Other Throughput - KiB/s',
+                                                             cluster_labels, registry=self.registry)
 
     def parse_cluster_metric(self, cluster):
         read_iops = cluster['read_iops']
@@ -114,95 +81,55 @@ class NetAppMetrics(base_driver.Metrics):
         write_throughput = cluster['write_throughput']
         other_throughput = cluster['other_throughput']
 
-        self.gauge_san_cluster_block_read_iops.labels(
-            backend_name=self.backend_name,
-            cluster_name=cluster['name'],
-            san_ip=self.san_ip).set(read_iops)
-
-        self.gauge_san_cluster_block_write_iops.labels(
-            backend_name=self.backend_name,
-            cluster_name=cluster['name'],
-            san_ip=self.san_ip).set(write_iops)
-
-        self.gauge_san_cluster_block_other_iops.labels(
-            backend_name=self.backend_name,
-            cluster_name=cluster['name'],
-            san_ip=self.san_ip).set(other_iops)
-
-        self.gauge_san_cluster_block_read_latency.labels(
-            backend_name=self.backend_name,
-            cluster_name=cluster['name'],
-            san_ip=self.san_ip).set(read_latency)
-
-        self.gauge_san_cluster_block_read_latency.labels(
-            backend_name=self.backend_name,
-            cluster_name=cluster['name'],
-            san_ip=self.san_ip).set(write_latency)
-
-        self.gauge_san_cluster_block_read_latency.labels(
-            backend_name=self.backend_name,
-            cluster_name=cluster['name'],
-            san_ip=self.san_ip).set(other_latency)
-
-        self.gauge_san_cluster_block_read_byte_rate.labels(
-            backend_name=self.backend_name,
-            cluster_name=cluster['name'],
-            san_ip=self.san_ip).set(read_throughput / 1024)
-
-        self.gauge_san_cluster_block_write_byte_rate.labels(
-            backend_name=self.backend_name,
-            cluster_name=cluster['name'],
-            san_ip=self.san_ip).set(write_throughput / 1024)
-
-        self.gauge_san_cluster_block_other_byte_rate.labels(
-            backend_name=self.backend_name,
-            cluster_name=cluster['name'],
-            san_ip=self.san_ip).set(other_throughput / 1024)
+        self.gauge_san_cluster_block_read_iops.labels(backend_name=self.backend_name, cluster_name=cluster['name'],
+                                                      san_ip=cluster['san_ip']).set(read_iops)
+        self.gauge_san_cluster_block_write_iops.labels(backend_name=self.backend_name, cluster_name=cluster['name'],
+                                                       san_ip=cluster['san_ip']).set(write_iops)
+        self.gauge_san_cluster_block_other_iops.labels(backend_name=self.backend_name, cluster_name=cluster['name'],
+                                                       san_ip=cluster['san_ip']).set(other_iops)
+        self.gauge_san_cluster_block_read_latency.labels(backend_name=self.backend_name, cluster_name=cluster['name'],
+                                                         san_ip=cluster['san_ip']).set(read_latency)
+        self.gauge_san_cluster_block_read_latency.labels(backend_name=self.backend_name, cluster_name=cluster['name'],
+                                                         san_ip=cluster['san_ip']).set(write_latency)
+        self.gauge_san_cluster_block_read_latency.labels(backend_name=self.backend_name, cluster_name=cluster['name'],
+                                                         san_ip=cluster['san_ip']).set(other_latency)
+        self.gauge_san_cluster_block_read_byte_rate.labels(backend_name=self.backend_name, cluster_name=cluster['name'],
+                                                           san_ip=cluster['san_ip']).set(read_throughput / 1024)
+        self.gauge_san_cluster_block_write_byte_rate.labels(backend_name=self.backend_name,
+                                                            cluster_name=cluster['name'],
+                                                            san_ip=cluster['san_ip']).set(write_throughput / 1024)
+        self.gauge_san_cluster_block_other_byte_rate.labels(backend_name=self.backend_name,
+                                                            cluster_name=cluster['name'],
+                                                            san_ip=cluster['san_ip']).set(other_throughput / 1024)
 
     def define_pool_info_metrics(self):
-        pool_labels = ['backend_name', 'san_ip', 'pool_name']
-        self.gauge_san_pool_total_capacity = \
-            Gauge('san_pool_total_capacity_mib',
-                  'Total capacity of pool in MiB', pool_labels,
-                  registry=self.registry)
-        self.gauge_san_pool_used_capacity = \
-            Gauge('san_pool_used_capacity_mib',
-                  'Used capacity of pool in MiB', pool_labels,
-                  registry=self.registry)
-        self.gauge_san_pool_free_capacity = \
-            Gauge('san_pool_free_capacity_mib',
-                  'Free capacity of pool in MiB', pool_labels,
-                  registry=self.registry)
-        self.gauge_san_pool_block_read_iops = \
-            Gauge('san_pool_number_read_io', 'Pool Read IOPS',
-                  pool_labels, registry=self.registry)
-        self.gauge_san_pool_block_write_iops = \
-            Gauge('san_pool_number_write_io', 'Pool Write IOPS',
-                  pool_labels, registry=self.registry)
-        self.gauge_san_pool_block_other_iops = \
-            Gauge('san_pool_number_other_io', 'Pool Other IOPS',
-                  pool_labels, registry=self.registry)
-        self.gauge_san_pool_block_read_latency = \
-            Gauge('san_pool_number_read_latency', 'Pool Read Latency',
-                  pool_labels, registry=self.registry)
-        self.gauge_san_pool_block_write_latency = \
-            Gauge('san_pool_number_write_latency', 'Pool Write Latency',
-                  pool_labels, registry=self.registry)
-        self.gauge_san_pool_block_other_latency = \
-            Gauge('san_pool_number_other_latency', 'Pool Other Latency',
-                  pool_labels, registry=self.registry)
-        self.gauge_san_pool_block_read_byte_rate = \
-            Gauge('san_pool_number_read_by_rate',
-                  'Pool Read Throughput - KiB/s', pool_labels,
-                  registry=self.registry)
-        self.gauge_san_pool_block_write_byte_rate = \
-            Gauge('san_pool_number_write_byte_rate',
-                  'Pool Write Throughput - KiB/s', pool_labels,
-                  registry=self.registry)
-        self.gauge_san_pool_block_other_byte_rate = \
-            Gauge('san_pool_number_other_by_rate',
-                  'Pool Other Throughput - KiB/s', pool_labels,
-                  registry=self.registry)
+        pool_labels = ["backend_name", "san_ip", "pool_name"]
+        self.gauge_san_pool_total_capacity = Gauge('san_pool_total_capacity_mib',
+                                                   'Total capacity of pool in MiB', pool_labels, registry=self.registry)
+        self.gauge_san_pool_used_capacity = Gauge('san_pool_used_capacity_mib',
+                                                  'Used capacity of pool in MiB', pool_labels, registry=self.registry)
+        self.gauge_san_pool_free_capacity = Gauge('san_pool_free_capacity_mib',
+                                                  'Free capacity of pool in MiB', pool_labels, registry=self.registry)
+        self.gauge_san_pool_block_read_iops = Gauge('san_pool_number_read_io', 'Pool Read IOPS',
+                                                    pool_labels, registry=self.registry)
+        self.gauge_san_pool_block_write_iops = Gauge('san_pool_number_write_io', 'Pool Write IOPS',
+                                                     pool_labels, registry=self.registry)
+        self.gauge_san_pool_block_other_iops = Gauge('san_pool_number_other_io', 'Pool Other IOPS',
+                                                     pool_labels, registry=self.registry)
+        self.gauge_san_pool_block_read_latency = Gauge('san_pool_number_read_latency', 'Pool Read Latency',
+                                                       pool_labels, registry=self.registry)
+        self.gauge_san_pool_block_write_latency = Gauge('san_pool_number_write_latency', 'Pool Write Latency',
+                                                        pool_labels, registry=self.registry)
+        self.gauge_san_pool_block_other_latency = Gauge('san_pool_number_other_latency', 'Pool Other Latency',
+                                                        pool_labels, registry=self.registry)
+        self.gauge_san_pool_block_read_byte_rate = Gauge('san_pool_number_read_by_rate', 'Pool Read Throughput - KiB/s',
+                                                         pool_labels, registry=self.registry)
+        self.gauge_san_pool_block_write_byte_rate = Gauge('san_pool_number_write_byte_rate',
+                                                          'Pool Write Throughput - KiB/s',
+                                                          pool_labels, registry=self.registry)
+        self.gauge_san_pool_block_other_byte_rate = Gauge('san_pool_number_other_by_rate',
+                                                          'Pool Other Throughput - KiB/s',
+                                                          pool_labels, registry=self.registry)
 
     def parse_pool_info(self, pool_info):
         total_capacity = pool_info['size_total']
@@ -217,70 +144,33 @@ class NetAppMetrics(base_driver.Metrics):
         write_throughput = pool_info['write_throughput']
         other_throughput = pool_info['other_throughput']
 
-        self.gauge_san_pool_total_capacity.labels(
-            backend_name=self.backend_name,
-            pool_name=pool_info['name'],
-            san_ip=self.san_ip).set(total_capacity / 1024 / 1024)
-
-        self.gauge_san_pool_used_capacity.labels(
-            backend_name=self.backend_name,
-            pool_name=pool_info['name'],
-            san_ip=self.san_ip).set(used_capacity / 1024 / 1024)
-
-        self.gauge_san_pool_block_read_iops.labels(
-            backend_name=self.backend_name,
-            pool_name=pool_info['name'],
-            san_ip=self.san_ip).set(read_iops)
-
-        self.gauge_san_pool_block_write_iops.labels(
-            backend_name=self.backend_name,
-            pool_name=pool_info['name'],
-            san_ip=self.san_ip).set(write_iops)
-
-        self.gauge_san_pool_block_other_iops.labels(
-            backend_name=self.backend_name,
-            pool_name=pool_info['name'],
-            san_ip=self.san_ip).set(other_iops)
-
-        self.gauge_san_pool_block_read_latency.labels(
-            backend_name=self.backend_name,
-            pool_name=pool_info['name'],
-            san_ip=self.san_ip).set(read_latency)
-
-        self.gauge_san_pool_block_read_latency.labels(
-            backend_name=self.backend_name,
-            pool_name=pool_info['name'],
-            san_ip=self.san_ip).set(write_latency)
-
-        self.gauge_san_pool_block_read_latency.labels(
-            backend_name=self.backend_name,
-            pool_name=pool_info['name'],
-            san_ip=self.san_ip).set(other_latency)
-
-        self.gauge_san_pool_block_read_byte_rate.labels(
-            backend_name=self.backend_name,
-            pool_name=pool_info['name'],
-            san_ip=self.san_ip).set(read_throughput / 1024)
-
-        self.gauge_san_pool_block_write_byte_rate.labels(
-            backend_name=self.backend_name,
-            pool_name=pool_info['name'],
-            san_ip=self.san_ip).set(write_throughput / 1024)
-
-        self.gauge_san_pool_block_other_byte_rate.labels(
-            backend_name=self.backend_name,
-            pool_name=pool_info['name'],
-            san_ip=self.san_ip).set(other_throughput / 1024)
+        self.gauge_san_pool_total_capacity.labels(backend_name=self.backend_name, pool_name=pool_info['name'],
+                                                  san_ip=pool_info['san_ip']).set(total_capacity / 1024 / 1024)
+        self.gauge_san_pool_used_capacity.labels(backend_name=self.backend_name, pool_name=pool_info['name'],
+                                                 san_ip=pool_info['san_ip']).set(used_capacity / 1024 / 1024)
+        self.gauge_san_pool_block_read_iops.labels(backend_name=self.backend_name, pool_name=pool_info['name'],
+                                                   san_ip=pool_info['san_ip']).set(read_iops)
+        self.gauge_san_pool_block_write_iops.labels(backend_name=self.backend_name, pool_name=pool_info['name'],
+                                                    san_ip=pool_info['san_ip']).set(write_iops)
+        self.gauge_san_pool_block_other_iops.labels(backend_name=self.backend_name, pool_name=pool_info['name'],
+                                                    san_ip=pool_info['san_ip']).set(other_iops)
+        self.gauge_san_pool_block_read_latency.labels(backend_name=self.backend_name, pool_name=pool_info['name'],
+                                                      san_ip=pool_info['san_ip']).set(read_latency)
+        self.gauge_san_pool_block_read_latency.labels(backend_name=self.backend_name, pool_name=pool_info['name'],
+                                                      san_ip=pool_info['san_ip']).set(write_latency)
+        self.gauge_san_pool_block_read_latency.labels(backend_name=self.backend_name, pool_name=pool_info['name'],
+                                                      san_ip=pool_info['san_ip']).set(other_latency)
+        self.gauge_san_pool_block_read_byte_rate.labels(backend_name=self.backend_name, pool_name=pool_info['name'],
+                                                        san_ip=pool_info['san_ip']).set(read_throughput / 1024)
+        self.gauge_san_pool_block_write_byte_rate.labels(backend_name=self.backend_name, pool_name=pool_info['name'],
+                                                         san_ip=pool_info['san_ip']).set(write_throughput / 1024)
+        self.gauge_san_pool_block_other_byte_rate.labels(backend_name=self.backend_name, pool_name=pool_info['name'],
+                                                         san_ip=pool_info['san_ip']).set(other_throughput / 1024)
 
     def define_node_metrics(self):
-        node_labels = ['backend_name',
-                       'san_ip',
-                       'node_name',
-                       'serial_number']
-        self.gauge_san_node_state = Gauge('san_node_state',
-                                          'State Node',
-                                          node_labels,
-                                          registry=self.registry)
+        node_labels = ['backend_name', 'san_ip', 'node_name', 'serial_number']
+        self.gauge_san_node_state = Gauge('san_node_state', ' State Node',
+                                          node_labels, registry=self.registry)
 
     def parse_node_metrics(self, node):
         name = node['name']
@@ -291,16 +181,12 @@ class NetAppMetrics(base_driver.Metrics):
             state = 1
         else:
             state = 0
-        self.gauge_san_node_state.labels(
-            backend_name=self.backend_name,
-            san_ip=san_ip, node_name=name,
-            serial_number=serial).set(state)
+        self.gauge_san_node_state.labels(backend_name=self.backend_name, san_ip=san_ip, node_name=name,
+                                         serial_number=serial).set(state)
 
     def define_disk_metrics(self):
         disk_labels = ['backend_name', 'san_ip', 'name']
-        self.gauge_san_disk_state = Gauge('san_disk_state', 'State Disk',
-                                          disk_labels,
-                                          registry=self.registry)
+        self.gauge_san_disk_state = Gauge('san_disk_state', 'State Disk', disk_labels, registry=self.registry)
 
     def parse_disk_metrics(self, disk):
         name = disk['name']
@@ -309,10 +195,7 @@ class NetAppMetrics(base_driver.Metrics):
             state = 1
         else:
             state = 0
-        self.gauge_san_disk_state.labels(
-            backend_name=self.backend_name,
-            san_ip=disk['san_ip'],
-            name=name).set(state)
+        self.gauge_san_disk_state.labels(backend_name=self.backend_name, san_ip=disk['san_ip'], name=name).set(state)
 
     def parse_metrics(self, data):
         for data_cluster in data['cluster']:
