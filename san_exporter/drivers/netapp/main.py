@@ -120,18 +120,20 @@ class NetAppExporter(base_driver.ExporterDriver):
             disk_data.append(data)
         return disk_data
 
+ 
     def run(self):
         while True:
-            if time() - self.time_last_request > self.timeout:
-                sleep(self.interval)
-                continue
             data = {}
-            data['cluster'] = self.get_cluster_metrics()
-            data['node'] = self.get_node_info()
-            data['pool'] = self.get_pool_info()
-            data['disk'] = self.get_disk_info()
-            cache_data(self.cache_file, data)
-            sleep(self.interval)
+            try:
+                data['cluster'] = self.get_cluster_metrics()
+                data['node'] = self.get_node_info()
+                data['pool'] = self.get_pool_info()
+                data['disk'] = self.get_disk_info()
+                cache_data(self.cache_file, data)
+            except:
+               sleep(sleep.interval)
+               continue
+
 
 
 def main(config, interval):
