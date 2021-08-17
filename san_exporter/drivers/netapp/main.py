@@ -16,7 +16,7 @@
 #    under the License.
 #
 
-from time import sleep, time
+from time import sleep
 
 import requests
 from san_exporter.drivers import base_driver
@@ -120,7 +120,6 @@ class NetAppExporter(base_driver.ExporterDriver):
             disk_data.append(data)
         return disk_data
 
- 
     def run(self):
         while True:
             data = {}
@@ -131,9 +130,8 @@ class NetAppExporter(base_driver.ExporterDriver):
                 data['disk'] = self.get_disk_info()
                 cache_data(self.cache_file, data)
             except:
-               sleep(sleep.interval)
-               continue
-
+                sleep(sleep.interval)
+                continue
 
 
 def main(config, interval):
