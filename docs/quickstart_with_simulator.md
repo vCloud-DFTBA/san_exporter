@@ -29,14 +29,18 @@ $ virtualenv -p python3 3parclient
 $ source ~/venv/3parclient/bin/activate
 $ cd ~/python-3parclient
 $ pip install -r requirements.txt
+$ pip install Flask
 $ python test/HPE3ParMockServer_flask.py -port 5001 -user hpe3par_admin -password hpe3par_password -debug
 ```
 
 # Start app on the same machine
 ```
-cd ~/san_exporter
+$ cd ~/san_exporter
+$ source ~/venv/san_exporter/bin/activate
 $ cp examples/3par_config.yml config.yml
 $ python3 manage.py
 
-# Go to the address "http://localhost:8888" to see the metrics
+# Check result
+```
+curl http://localhost:8888/3par_8440
 ```
