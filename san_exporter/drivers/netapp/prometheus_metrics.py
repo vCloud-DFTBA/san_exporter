@@ -28,14 +28,25 @@ class NetAppMetrics(base_driver.Metrics):
         labels = ['backend_name', 'san_ip']
         self.backend_name = config['name']
         self.san_ip = config['netapp_api_ip']
-        self.info_san = Info('san_storage', 'Basic information',
+        self.info_san = Gauge('san_storage', 'Basic information',
                              registry=self.registry)
+        self.define_cluster_info()
+        if self.optional_metrics.get('cluster'):
+            self.define_cluster_metric()
         if self.optional_metrics.get('pool'):
             self.define_pool_info_metrics()
         if self.optional_metrics.get('node'):
             self.define_node_metrics()
         if self.optional_metrics.get('disk'):
             self.define_disk_metrics()
+   
+    def define_cluster_info(self):
+        cluster_labels = ["name", "backend_name", "san_ip", "version"]
+        self.gauge_san_cluster_info = Gauge(
+            'san_storage_info',
+            'Basic information',
+            cluster_labels, 
+            registry=self.registry)
 
     def parse_cluster_info(self, cluster):
         self.info_san.info({
