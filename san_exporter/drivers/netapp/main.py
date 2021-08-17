@@ -33,32 +33,24 @@ class NetAppExporter(base_driver.ExporterDriver):
         self.netapp_password = config['netapp_password']
         self.backend_name = config['name']
         self.auth = (self.netapp_username, self.netapp_password)
-        self.headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'}
+        self.headers = {'Accept': 'application/json', 'Content-Type": "application/json'}
 
     def get_cluster_metrics(self):
         cluster_data = []
-        response = requests.get(
-            'https://' + self.netapp_api_ip +
-            '/api/cluster',
-            headers=self.headers,
-            auth=self.auth,
-            verify=False).json()
-        cluster_metric = {
-            'name': response['name'],
-            'version': response['version']['full'],
-            'read_iops': response['metric']['iops']['read'],
-            'write_iops': response['metric']['iops']['write'],
-            'other_iops': response['metric']['iops']['other'],
-            'read_latency': response['metric']['latency']['read'],
-            'write_latency': response['metric']['latency']['write'],
-            'other_latency': response['metric']['latency']['other'],
-            'read_throughput': response['metric']['throughput']['read'],
-            'write_throughput': response['metric']['throughput']['write'],
-            'other_throughput': response['metric']['throughput']['other'],
-            'status': response['metric']['status']
-        }
+        response = requests.get('https://' + self.netapp_api_ip + '/api/cluster', headers=self.headers, auth=self.auth,
+                                verify=False).json()
+        cluster_metric = {'name': response['name'], 'version': response['version']['full'],
+                          'read_iops': response['metric']['iops']['read'],
+                          'write_iops': response['metric']['iops']['write'],
+                          'other_iops': response['metric']['iops']['other'],
+                          'read_latency': response['metric']['latency']['read'],
+                          'write_latency': response['metric']['latency']['write'],
+                          'other_latency': response['metric']['latency']['other'],
+                          'read_throughput': response['metric']['throughput']['read'],
+                          'write_throughput': response['metric']['throughput']['write'],
+                          'other_throughput': response['metric']['throughput']['other'],
+                          'status': response['metric']['status']
+                          }
         cluster_metric.update({'san_ip': self.netapp_api_ip})
         cluster_data.append(cluster_metric)
         return cluster_data
@@ -66,47 +58,30 @@ class NetAppExporter(base_driver.ExporterDriver):
     def get_node_info(self):
         node_data = []
         response = requests.get(
-            'https://' + self.netapp_api_ip +
-            '/api/cluster/nodes?fields=name,'
-            'serial_number,'
-            'state,model,'
-            'version',
+            'https://' + self.netapp_api_ip + '/api/cluster/nodes?fields=name,serial_number,state,model,version',
             headers=self.headers, auth=self.auth, verify=False).json()
         for t in response['records']:
-            data = {'name': t['name'],
-                    'state': t['state'],
-                    'model': t['model'],
-                    'serial_number': t['serial_number'],
+            data = {'name': t['name'], 'state': t['state'], 'model': t['model'], 'serial_number': t['serial_number'],
                     'version': t['version']['full']}
-            data.update({
-                'san_ip': self.netapp_api_ip})
+            data.update({'san_ip': self.netapp_api_ip})
             node_data.append(data)
         return node_data
 
     def get_pool_info(self):
         pool_data = []
         response = pool_info = requests.get(
-            'https://' + self.netapp_api_ip +
-            "/api/storage/volumes?fields=metric,"
-            "state,space",
-            headers=self.headers,
-            auth=self.auth,
-            verify=False).json()
+            'https://' + self.netapp_api_ip + "/api/storage/volumes?fields=metric,state,space", headers=self.headers,
+            auth=self.auth, verify=False).json()
         for t in response['records']:
             if t['name'].startswith('agg'):
-                data = {'name': t['name'],
-                        'size_total': t['space']['available'],
-                        'size_used': t['space']['used'],
-                        'read_iops': t['metric']['iops']['read'],
-                        'write_iops': t['metric']['iops']['write'],
-                        'other_iops': t['metric']['iops']['other'],
-                        'read_latency': t['metric']['latency']['read'],
+                data = {'name': t['name'], 'size_total': t['space']['available'], 'size_used': t['space']['used'],
+                        'read_iops': t['metric']['iops']['read'], 'write_iops': t['metric']['iops']['write'],
+                        'other_iops': t['metric']['iops']['other'], 'read_latency': t['metric']['latency']['read'],
                         'write_latency': t['metric']['latency']['write'],
                         'other_latency': t['metric']['latency']['other'],
                         'read_throughput': t['metric']['throughput']['read'],
                         'write_throughput': t['metric']['throughput']['write'],
-                        'other_throughput': t['metric']['throughput']['other'],
-                        'status': t['metric']['status']}
+                        'other_throughput': t['metric']['throughput']['other'], 'status': t['metric']['status']}
                 data.update({'san_ip': self.netapp_api_ip})
                 pool_data.append(data)
         return pool_data
@@ -114,14 +89,10 @@ class NetAppExporter(base_driver.ExporterDriver):
     def get_disk_info(self):
         disk_data = []
         response = requests.get(
-            'https://' + self.netapp_api_ip +
-            '/api/storage/disks?fields=name,'
-            'state,model,serial_number',
+            'https://' + self.netapp_api_ip + '/api/storage/disks?fields=name,state,model,serial_number',
             headers=self.headers, auth=self.auth, verify=False).json()
         for t in response['records']:
-            data = {'name': t['name'], 'state': t['state'],
-                    'model': t['model'],
-                    'serial_number': t['serial_number']}
+            data = {'name': t['name'], 'state': t['state'], 'model': t['model'], 'serial_number': t['serial_number']}
             data.update({'san_ip': self.netapp_api_ip})
             disk_data.append(data)
         return disk_data
