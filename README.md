@@ -1,5 +1,8 @@
 # SAN Exporter
-[![license](https://img.shields.io/badge/license-Apache%20v2.0-blue.svg)](LICENSE) [![CI](https://github.com/vCloud-DFTBA/san_exporter/actions/workflows/main.yml/badge.svg?branch=main&event=push)](https://github.com/vCloud-DFTBA/san_exporter/actions/workflows/main.yml)
+[![license](https://img.shields.io/github/license/vCloud-DFTBA/san_exporter)](LICENSE)
+[![CI](https://github.com/vCloud-DFTBA/san_exporter/actions/workflows/main.yml/badge.svg?branch=main&event=push)](https://github.com/vCloud-DFTBA/san_exporter/actions/workflows/main.yml)
+[![Docker Pulls](https://img.shields.io/docker/pulls/daikk115/san-exporter)](https://hub.docker.com/r/daikk115/san-exporter)
+[![Code size](https://img.shields.io/github/languages/code-size/vCloud-DFTBA/san_exporter)](Code)
 
 Prometheus exporter for Storage Area Network (SAN).
 
@@ -13,6 +16,16 @@ That's why we build this to have an **unified monitoring/alerting solution** wit
 
 ## Architecture overview
 ![SAN exporter architecture](docs/images/architecture.png)
+
+## Features
+
+There are some main features you might want to know, for others, please see [example configuration](examples/config.yml.sample).
+
+- Enable/disable optinal metrics for each backend
+- Enable/disable backend
+- Backend will automatically stop collecting data from SAN system after `timeout` seconds from last request of client. With this feature, we can deploy two instances as Active/Passive mode for high availability.
+
+> Note: Backend may not respond metrics in the first interval while collecting, calculating and caching metrics.
 
 ## Quick start
 
