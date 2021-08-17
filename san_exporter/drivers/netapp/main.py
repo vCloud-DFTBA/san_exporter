@@ -33,7 +33,7 @@ class NetAppExporter(base_driver.ExporterDriver):
         self.netapp_password = config['netapp_password']
         self.backend_name = config['name']
         self.auth = (self.netapp_username, self.netapp_password)
-        self.headers = {'Accept': 'application/json', 'Content-Type": "application/json'}
+        self.headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
     def get_cluster_metrics(self):
         cluster_data = []
