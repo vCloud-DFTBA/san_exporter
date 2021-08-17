@@ -27,10 +27,6 @@ class NetAppMetrics(base_driver.Metrics):
         labels = ['backend_name', 'san_ip']
         self.backend_name = config['name']
         self.san_ip = config['netapp_api_ip']
-        self.info_san = Gauge(
-            'san_storage',
-            'Basic information',
-            registry=self.registry)
         self.define_cluster_info()
         if self.optional_metrics.get('cluster'):
             self.define_cluster_metric()
