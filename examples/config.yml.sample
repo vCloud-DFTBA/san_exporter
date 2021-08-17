@@ -61,7 +61,8 @@ backends:
 
 # HPE 3par Driver
 # Tested with HPE 3par 8440
-# Supported optional metrics: port, cpu, cpg, alert
+# Supported optional performance metrics: port, cpu, cpg and alert metrics
+# Noted: need WSAPI >= 1.5 for collecting performance metrics. 
 - name: "3par_8440"
   hpe3par_api_url: "http://127.0.0.1:5001/api/v1"
   hpe3par_username: "hpe3par_admin"
@@ -74,7 +75,7 @@ backends:
   interval: 300 # should not less than 5m, see the driver config below
   driver: "hpe3par"
   pools: UnitTestCPG, UnitTestCPG2 # all: to get all cpg
-  optional_metrics:
+  optional_metrics: # for performance metrics
     port: False
     cpu: False
     cpg: True
